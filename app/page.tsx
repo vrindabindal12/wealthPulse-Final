@@ -83,12 +83,7 @@ export default function Home() {
               >
                 Stocks
               </Link>
-              <Link
-                href="/mutual-funds"
-                className="text-white hover:text-purple-300 transition-colors duration-200 font-medium"
-              >
-                Mutual Funds
-              </Link>
+
             </motion.div>
 
             {/* Mobile menu button */}
