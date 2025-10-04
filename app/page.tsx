@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Search, TrendingUp, BarChart3, Shield, BookOpen, Lock } from "lucide-react";
+import FinancialAdvisorChatbot from "./components/FinancialAdvisorChatbot";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -356,6 +357,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Financial Advisor Chatbot */}
+      <FinancialAdvisorChatbot />
     </div>
   );
 }
