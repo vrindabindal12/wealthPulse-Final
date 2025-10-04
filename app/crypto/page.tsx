@@ -89,7 +89,7 @@ export default function CryptoDashboard() {
 
     try {
       // Using the Generative API text generation endpoint
-      const prompt = `Provide a brief investment analysis for ${selectedCrypto.name} (${selectedCrypto.symbol.toUpperCase()}). Current price: $${selectedCrypto.market_data.current_price.usd}. Market cap: $${selectedCrypto.market_data.market_cap.usd}. Include outlook and risk assessment in 3-4 sentences.`;
+      const prompt = `You are a helpful financial analyst. Provide in extreme detail detailed, structured analysis for  ${selectedCrypto.name} (${selectedCrypto.symbol.toUpperCase()}). Current price: $${selectedCrypto.market_data.current_price.usd}. Market cap: $${selectedCrypto.market_data.market_cap.usd}. Include outlook and risk assessment in detail.`;
 
       const response = await fetch('https://generative.googleapis.com/v1/models/text-bison-001:generateText', {
         method: 'POST',

@@ -133,13 +133,13 @@ export default function MutualFundsDashboard() {
     }
 
     if (!geminiKey) {
-      const fallback = `Analysis for ${selectedFund.name} (${selectedFund.symbol}): Current NAV: $${selectedFund.price?.toFixed(2)}. Expense Ratio: ${selectedFund.expenseRatio ? (selectedFund.expenseRatio * 100).toFixed(2) : 'N/A'}%. Outlook: This mutual fund provides ${selectedFund.sector || 'diversified'} exposure with professional management. Consider your investment horizon and risk tolerance. Risk: Market fluctuations, management changes, and expense ratios affect returns. Mutual funds are best for long-term investors.`;
+      const fallback = `Overview:\n- ${selectedFund.name} (${selectedFund.symbol})\n- Current NAV: $${selectedFund.price?.toFixed(2)}\n- Expense Ratio: ${selectedFund.expenseRatio ? (selectedFund.expenseRatio * 100).toFixed(2) : 'N/A'}%\n\nPerformance Summary:\n- YTD change: ${selectedFund.changesPercentage?.toFixed(2) || 'N/A'}%\n- 52-week range: $${selectedFund.yearLow?.toFixed(2) || 'N/A'} - $${selectedFund.yearHigh?.toFixed(2) || 'N/A'}\n\nRisks & Considerations:\n- Market volatility and sector concentration may impact returns.\n- Expense ratio and fund management quality affect long-term performance.\n\nOutlook:\n- This fund provides ${selectedFund.sector || 'diversified'} exposure and is generally suitable for investors with a medium-to-long term horizon. Consider your risk tolerance and compare against low-cost index alternatives.\n\nActionable Points:\n- Review expense ratio vs peers.\n- Check holdings overlap if combining with other funds.\n- Monitor performance vs benchmark.`;
       setAiReport(fallback);
       return;
     }
 
     try {
-      const prompt = `Provide a brief investment analysis for the mutual fund ${selectedFund.name} (${selectedFund.symbol}). Current NAV: $${selectedFund.price?.toFixed(2)}. Sector focus: ${selectedFund.sector || 'diversified'}. Year-to-date change: ${selectedFund.changesPercentage?.toFixed(2)}%. Include outlook and risk assessment in 3-4 sentences.`;
+      const prompt = `You are a helpful financial analyst. Provide a detailed, structured analysis for the mutual fund ${selectedFund.name} (${selectedFund.symbol}) in 6-8 concise bullet points using these headings: Overview, Performance Summary, Risks & Considerations, Outlook, and Actionable Points. Include current NAV ($${selectedFund.price?.toFixed(2)}), expense ratio (${selectedFund.expenseRatio ? (selectedFund.expenseRatio * 100).toFixed(2) : 'N/A'}%), year-to-date change (${selectedFund.changesPercentage?.toFixed(2) || 'N/A'}%), and 52-week range ($${selectedFund.yearLow?.toFixed(2) || 'N/A'} - $${selectedFund.yearHigh?.toFixed(2) || 'N/A'}). Keep each bullet short (1-2 sentences).`;
 
       const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
         method: 'POST',
