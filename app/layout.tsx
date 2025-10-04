@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FinancialAdvisorChatbot from "./components/FinancialAdvisorChatbot";
+import { PortfolioProvider } from "./contexts/PortfolioContext";
+import Navbar from "./components/Navbar";
+import NotificationToast from "./components/NotificationToast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900`}
       >
-        {children}
+        <PortfolioProvider>
+          <Navbar />
+          <main>{children}</main>
+          <NotificationToast />
+          <FinancialAdvisorChatbot />
+        </PortfolioProvider>
       </body>
     </html>
   );

@@ -46,7 +46,7 @@ export default function FinancialAdvisorChatbot() {
     try {
       // Initialize Gemini AI (you'll need to set up environment variable)
       const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
       const financialAdvisorPrompt = `You are a professional financial advisor and investment expert with years of experience in wealth management, portfolio optimization, and financial planning. 
 

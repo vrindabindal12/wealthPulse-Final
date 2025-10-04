@@ -2,8 +2,11 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Search, TrendingUp } from 'lucide-react';
+import { usePortfolio } from '../contexts/PortfolioContext';
+
 
 export default function StocksDashboard() {
+  const { addToPortfolio, isInPortfolio } = usePortfolio();
   const [searchTerm, setSearchTerm] = useState('');
   const [stockList, setStockList] = useState<any[]>([]);
   const [selectedStock, setSelectedStock] = useState<any | null>(null);
@@ -183,6 +186,23 @@ export default function StocksDashboard() {
     return (((current - past) / past) * 100).toFixed(2);
   };
 
+  const handleAddToPortfolio = () => {
+    if (!selectedStock) return;
+
+    const portfolioItem = {
+      id: selectedStock.ticker,
+      name: selectedStock.name,
+      symbol: selectedStock.ticker,
+      type: 'stock' as const,
+      price: selectedStock.price,
+      addedAt: new Date(),
+      marketCap: selectedStock.market_cap,
+      change: selectedStock.change_percent
+    };
+
+    addToPortfolio(portfolioItem);
+  };
+
   if (!stockApiKey) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
@@ -203,7 +223,7 @@ export default function StocksDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
@@ -313,8 +333,16 @@ export default function StocksDashboard() {
                     </span>
                   </p>
                 </div>
-                <button className="mt-4 w-full bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors">
-                  Add to Portfolio
+                <button 
+                  onClick={handleAddToPortfolio}
+                  disabled={!selectedStock || isInPortfolio(selectedStock.ticker)}
+                  className={`mt-4 w-full px-6 py-2 rounded-lg font-medium transition-colors ${
+                    isInPortfolio(selectedStock?.ticker || '') 
+                      ? 'bg-gray-600 text-gray-300 cursor-not-allowed' 
+                      : 'bg-green-600 text-white hover:bg-green-700'
+                  }`}
+                >
+                  {isInPortfolio(selectedStock?.ticker || '') ? 'Already in Portfolio' : 'Add to Portfolio'}
                 </button>
               </div>
 

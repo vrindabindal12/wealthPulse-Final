@@ -2,8 +2,11 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Search, TrendingUp } from 'lucide-react';
+import { usePortfolio } from '../contexts/PortfolioContext';
+
 
 export default function CryptoDashboard() {
+  const { addToPortfolio, isInPortfolio } = usePortfolio();
   const [searchTerm, setSearchTerm] = useState('');
   const [cryptoList, setCryptoList] = useState<any[]>([]);
   const [selectedCrypto, setSelectedCrypto] = useState<any | null>(null);
@@ -207,6 +210,24 @@ export default function CryptoDashboard() {
     return (Math.sqrt(variance) * Math.sqrt(365) * 100).toFixed(2);
   };
 
+  const handleAddToPortfolio = () => {
+    if (!selectedCrypto) return;
+
+    const portfolioItem = {
+      id: selectedCrypto.id,
+      name: selectedCrypto.name,
+      symbol: selectedCrypto.symbol.toUpperCase(),
+      type: 'crypto' as const,
+      price: selectedCrypto.market_data.current_price.usd,
+      image: selectedCrypto.image?.small,
+      addedAt: new Date(),
+      marketCap: selectedCrypto.market_data.market_cap.usd,
+      change: selectedCrypto.market_data.price_change_percentage_24h
+    };
+
+    addToPortfolio(portfolioItem);
+  };
+
   if (showApiInput) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
@@ -247,7 +268,7 @@ export default function CryptoDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
@@ -344,8 +365,16 @@ export default function CryptoDashboard() {
                   <p className="text-gray-300">Launch Date: <span className="text-white">{selectedCrypto.genesis_date || 'N/A'}</span></p>
                   <p className="text-gray-300">Volume (24h): <span className="text-white">${selectedCrypto.market_data.total_volume.usd.toLocaleString()}</span></p>
                 </div>
-                <button className="mt-4 w-full bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors">
-                  Add to Portfolio
+                <button 
+                  onClick={handleAddToPortfolio}
+                  disabled={!selectedCrypto || isInPortfolio(selectedCrypto.id)}
+                  className={`mt-4 w-full px-6 py-2 rounded-lg font-medium transition-colors ${
+                    isInPortfolio(selectedCrypto?.id || '') 
+                      ? 'bg-gray-600 text-gray-300 cursor-not-allowed' 
+                      : 'bg-green-600 text-white hover:bg-green-700'
+                  }`}
+                >
+                  {isInPortfolio(selectedCrypto?.id || '') ? 'Already in Portfolio' : 'Add to Portfolio'}
                 </button>
               </div>
               {/* Historical Price Chart */}
