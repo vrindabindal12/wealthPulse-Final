@@ -1,6 +1,4 @@
-Here’s a **professional `README.md`** draft for your **Phoenix Arcana – CodeZen** project (the investment platform described in your PDF):
 
----
 
 # 🟡 **Phoenix Arcana – HackAURA**
 
@@ -125,4 +123,4 @@ Phoenix Arcana Team – HackAura🧠💻✨
 
 ---
 
-Would you like me to generate this README as a **`README.md` file** you can directly add to your GitHub repo? (Yes/No)
+
