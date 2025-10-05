@@ -31,12 +31,7 @@ export default function Navbar() {
             >
               Stocks
             </Link>
-            <Link
-              href="/mutual-funds"
-              className="text-white hover:text-cyan-400 transition-colors duration-200 font-medium"
-            >
-              Mutual Funds
-            </Link>
+          
             <Link
               href="/portfolio"
               className="text-white hover:text-cyan-400 transition-colors duration-200 font-medium"
