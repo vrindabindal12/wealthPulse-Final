@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
+/* Force dark theme always - override system preference */
 :root {
   --background: #0f172a;
   --foreground: #f8fafc;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -12,6 +14,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Force dark theme for all cases */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0f172a;
@@ -21,19 +24,24 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --background: #ffffff;
-    --foreground: #0f172a;
+    --background: #0f172a;
+    --foreground: #f8fafc;
   }
 }
 
-/* Ensure the gradient backgrounds work properly */
-html, body {
-  background: var(--background);
-  color: var(--foreground);
+/* Ensure html and body use dark background */
+html {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+body {
+  background: #0f172a !important;
+  color: #f8fafc !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Override any default Tailwind base styles that might interfere */
-body {
-  background: var(--background) !important;
+/* Override any potential system defaults */
+* {
+  color-scheme: dark;
 }
